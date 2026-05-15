@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Lịch sử giao dịch vé{% endblock %}
+{% block content %}
+<h2 class="text-danger mb-4">LỊCH SỬ GIAO DỊCH VÉ (Admin)</h2>
+<table class="table table-dark table-striped">
+  <thead class="bg-danger text-white">
+    <tr>
+      <th>ID</th><th>Tài khoản</th><th>Hành động</th><th>Phim</th><th>Ngày</th><th>Giờ</th><th>Ghế</th><th>Giá</th><th>Thời điểm</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for l in logs %}
+    <tr>
+      <td>{{ l.LogID }}</td>
+      <td>{{ l.Username }}</td>
+      <td>{{ l.Action }}</td>
+      <td>{{ l.MovieTitle or '-' }}</td>
+      <td>{{ l.ScreeningDate or '-' }}</td>
+      <td>{{ l.ScreeningTime or '-' }}</td>
+      <td>{{ l.SeatNumber or '-' }}</td>
+      <td>{{ l.Price or '-' }}</td>
+      <td>{{ l.Timestamp }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

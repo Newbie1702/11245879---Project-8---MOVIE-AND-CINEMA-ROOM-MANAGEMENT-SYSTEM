@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Vé đã mua{% endblock %}
+{% block content %}
+<h2 class="text-danger mb-4">VÉ ĐÃ MUA</h2>
+<a href="{{ url_for('customer_dashboard') }}" class="btn btn-secondary mb-3">← Quay lại Dashboard</a>
+<table class="table table-dark table-striped">
+  <thead class="bg-danger text-white">
+    <tr>
+      <th>Phim</th><th>Ngày</th><th>Giờ</th><th>Phòng</th><th>Ghế</th><th>Giá</th><th>Hành động</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for t in tickets %}
+    <tr>
+      <td>{{ t.MovieTitle }}</td>
+      <td>{{ t.ScreeningDate }}</td>
+      <td>{{ t.ScreeningTime }}</td>
+      <td>{{ t.RoomName }}</td>
+      <td>{{ t.SeatNumber }}</td>
+      <td>{{ t.Price }}</td>
+      <td>
+        {% if not is_admin %}
+        <form method="POST" action="{{ url_for('cancel_ticket', ticket_id=t.TicketID) }}" style="display:inline;">
+          <button class="btn btn-danger btn-sm">Hủy</button>
+        </form>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

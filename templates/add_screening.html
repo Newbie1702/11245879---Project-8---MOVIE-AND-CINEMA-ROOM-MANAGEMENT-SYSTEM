@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Thêm suất chiếu{% endblock %}
+{% block content %}
+<h2 class="text-danger mb-4">Thêm suất chiếu</h2>
+<form method="POST">
+  <div class="mb-3">
+    <label class="form-label">Phim</label>
+    <select name="movie_id" class="form-select" required>
+      {% for m in movies %}
+      <option value="{{ m.MovieID }}">{{ m.MovieTitle }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Phòng</label>
+    <select name="room_id" class="form-select" required>
+      {% for r in rooms %}
+      <option value="{{ r.RoomID }}">{{ r.RoomName }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Ngày</label>
+    <input type="date" name="date" class="form-control" required>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Giờ</label>
+    <input type="time" name="time" class="form-control" required>
+  </div>
+  <button type="submit" class="btn btn-danger">Lưu</button>
+</form>
+{% endblock %}

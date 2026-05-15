@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}Thêm/Cập nhật phim{% endblock %}
+{% block content %}
+<h2 class="text-danger mb-4">{{ 'Cập nhật phim' if movie else 'Thêm phim' }}</h2>
+<form method="POST">
+  <div class="mb-3">
+    <label class="form-label">Tiêu đề</label>
+    <input type="text" name="title" class="form-control" value="{{ movie.MovieTitle if movie else '' }}" required>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Thể loại</label>
+    <input type="text" name="genre" class="form-control" value="{{ movie.Genre if movie else '' }}" required>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Thời lượng (phút)</label>
+    <input type="number" name="duration" class="form-control" value="{{ movie.DurationMinutes if movie else '' }}" required>
+  </div>
+  <button type="submit" class="btn btn-danger">Lưu</button>
+</form>
+{% endblock %}

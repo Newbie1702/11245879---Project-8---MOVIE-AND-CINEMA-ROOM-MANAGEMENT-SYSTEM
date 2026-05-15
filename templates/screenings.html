@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}Quản lý suất chiếu{% endblock %}
+{% block content %}
+<h2 class="text-danger mb-4">QUẢN LÝ SUẤT CHIẾU</h2>
+<a href="{{ url_for('add_screening') }}" class="btn btn-danger mb-3">Thêm suất chiếu</a>
+<table class="table table-dark table-striped">
+  <thead class="bg-danger text-white">
+    <tr>
+      <th>ID</th><th>Phim</th><th>Phòng</th><th>Ngày</th><th>Giờ</th><th>Hành động</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for s in screenings %}
+    <tr>
+      <td>{{ s.ScreeningID }}</td>
+      <td>{{ s.MovieTitle }}</td>
+      <td>{{ s.RoomName }}</td>
+      <td>{{ s.ScreeningDate }}</td>
+      <td>{{ s.ScreeningTime }}</td>
+      <td>
+        <form method="POST" action="{{ url_for('delete_screening', screening_id=s.ScreeningID) }}" style="display:inline;">
+          <button class="btn btn-danger btn-sm">Xóa</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

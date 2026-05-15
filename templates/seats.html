@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block title %}Chọn ghế{% endblock %}
+{% block content %}
+<h2 class="text-danger mb-4">Chọn ghế cho {{ screening.MovieTitle }}</h2>
+<form method="POST" action="{{ url_for('checkout') }}">
+  <input type="hidden" name="customer_id" value="{{ customer_id }}">
+  <input type="hidden" name="screening_id" value="{{ screening.ScreeningID }}">
+  <input type="hidden" name="price" value="{{ price }}">
+  <div class="seat-map">
+    {% for row in rows %}
+      <div class="d-flex mb-2">
+        {% for col in cols %}
+          {% set seat = row ~ col %}
+          {% if seat in booked_seats %}
+            <!-- Ghế đã mua: màu xám, disabled -->
+            <button type="button"
+                    class="seat btn btn-secondary disabled m-1"
+                    data-seat="{{ seat }}">
+              {{ seat }}
+            </button>
+          {% else %}
+            <!-- Ghế trống: có thể chọn -->
+            <button type="button"
+                    class="seat btn btn-outline-danger m-1"
+                    data-seat="{{ seat }}">
+              {{ seat }}
+            </button>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% endfor %}
+  </div>
+  <div class="mt-3">
+    <input type="hidden" name="seats" id="selected-seats">
+    <button type="submit" class="btn btn-danger">Thanh toán</button>
+    <a href="{{ url_for('customer_dashboard') }}" class="btn btn-secondary">← Quay lại Dashboard</a>
+  </div>
+</form>
+
+<script>
+  const selected = new Set();
+  document.querySelectorAll('.seat').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if(btn.classList.contains('disabled')) return; // ghế đã đặt thì không chọn
+      const seat = btn.dataset.seat;
+      if(selected.has(seat)) {
+        // hủy chọn
+        selected.delete(seat);
+        btn.classList.remove('btn-danger');
+        btn.classList.add('btn-outline-danger');
+      } else {
+        // chọn ghế
+        selected.add(seat);
+        btn.classList.remove('btn-outline-danger');
+        btn.classList.add('btn-danger');
+      }
+      document.getElementById('selected-seats').value = Array.from(selected);
+    });
+  });
+</script>
+{% endblock %}

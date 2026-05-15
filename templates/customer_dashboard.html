@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}Now Showing{% endblock %}
+
+{% block content %}
+
+<h2 class="mb-4 text-danger">PHIM ĐANG CÔNG CHIẾU</h2>
+
+<a href="{{ url_for('my_tickets') }}" class="btn btn-danger mb-3">Vé đã mua</a>
+
+<div class="row">
+
+{% for s in screenings %}
+
+<div class="col-md-4 mb-4">
+
+    <div class="card h-100 p-3 bg-white">
+
+        <img src="https://via.placeholder.com/300x420" class="img-fluid rounded mb-3">
+
+        <h4 style="color:#000000;">{{ s.MovieTitle }}</h4>
+
+        <p style="color:#000000;">
+            Thể loại: {{ s.Genre }}<br>
+            Thời lượng: {{ s.DurationMinutes }} phút<br>
+            Phòng: {{ s.RoomName }}<br>
+            Giờ chiếu: {{ s.ScreeningTime }}
+        </p>
+
+        <p style="color:#000000;">
+            Đã bán: {{ s.sold }}/{{ s.Capacity }}
+        </p>
+
+        <a href="{{ url_for('view_seats', screening_id=s.ScreeningID) }}"
+           class="btn btn-red w-100">
+            Đặt vé
+        </a>
+
+    </div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Dashboard</title>
+  <style>
+    body {
+      margin:0;
+      font-family: Arial, sans-serif;
+      background-color: #121212; /* nền đen */
+      color: #ffffff;
+    }
+    .sidebar {
+      float:left;
+      width:200px;
+      background:#1e1e1e;
+      height:100vh;
+      padding:10px;
+    }
+    .sidebar h3 {
+      color:#ff0000;
+    }
+    .sidebar a {
+      color:#ffffff;
+      text-decoration:none;
+      display:block;
+      padding:8px 0;
+    }
+    .sidebar a:hover {
+      color:#ff0000;
+    }
+    .content {
+      margin-left:220px;
+      padding:20px;
+    }
+    .content h2 {
+      color:#ff0000;
+    }
+    /* Container cho bảng có scroll riêng */
+    .table-container {
+      max-height:400px; /* chiều cao cố định */
+      overflow-y:auto;  /* bật scroll dọc */
+      border:1px solid #444;
+    }
+    table {
+      width:100%;
+      border-collapse: collapse;
+      background-color:#1e1e1e;
+      color:#ffffff;
+    }
+    table th, table td {
+      border:1px solid #444;
+      padding:8px;
+      text-align:left;
+    }
+    table th {
+      background-color:#ff0000;
+      color:#ffffff;
+      position: sticky; /* giữ header cố định */
+      top:0;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <h3>Admin Menu</h3>
+    <ul>
+      <li><a href="/admin/accounts">Quản lý tài khoản</a></li>
+      <li><a href="/admin/add_movie">Thêm phim</a></li>
+      <li><a href="/admin/add_screening">Thêm suất chiếu</a></li>
+    </ul>
+  </div>
+  <div class="content">
+    <h2>Báo cáo doanh thu</h2>
+    <div class="table-container">
+      <table>
+        <tr><th>Phim</th><th>Ngày</th><th>Giờ</th><th>Số vé bán</th><th>Doanh thu</th></tr>
+        {% for r in reports %}
+        <tr>
+          <td>{{ r.MovieTitle }}</td>
+          <td>{{ r.ScreeningDate }}</td>
+          <td>{{ r.ScreeningTime }}</td>
+          <td>{{ r.TicketsSold }}</td>
+          <td>{{ r.TotalRevenue }}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+</body>
+</html>

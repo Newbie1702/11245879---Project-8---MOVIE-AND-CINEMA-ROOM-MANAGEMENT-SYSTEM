@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Quản lý tài khoản{% endblock %}
+{% block content %}
+<h2 class="text-danger mb-4">QUẢN LÝ TÀI KHOẢN</h2>
+<div style="max-height:400px; overflow-y:auto; border:1px solid #444;">
+  <table class="table table-dark table-striped">
+    <thead class="bg-danger text-white">
+      <tr>
+        <th>ID</th><th>Username</th><th>Role</th><th>Hành động</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for acc in accounts %}
+      <tr>
+        <td>{{ acc.AccountID }}</td>
+        <td>
+          <a href="{{ url_for('account_detail', account_id=acc.AccountID) }}" class="text-danger">
+            {{ acc.Username }}
+          </a>
+        </td>
+        <td>{{ acc.Role }}</td>
+        <td>
+          <form method="POST" action="{{ url_for('delete_account', account_id=acc.AccountID) }}" style="display:inline;">
+            <button class="btn btn-danger btn-sm">Xóa</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
