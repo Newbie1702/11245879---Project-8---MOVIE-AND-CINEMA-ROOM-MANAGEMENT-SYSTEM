@@ -466,6 +466,47 @@ def delete_ticket(ticket_id):
         conn.close()
     return redirect(url_for('admin_tickets'))
 
+# =====================================================================
+# ADMIN – Backup và Recovery
+# =====================================================================
+import subprocess
+import datetime
+
+@app.route('/admin/backup')
+@login_required
+@admin_required
+def backup_db():
+    filename = f"backup_{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}.sql"
+    filepath = f"./backups/{filename}"
+    try:
+        subprocess.run(
+            ["mysqldump", "-u", "root", "-pYourPassword", "cinema_management"],
+            stdout=open(filepath, "w"),
+            check=True
+        )
+        flash(f"Backup thành công: {filename}", "success")
+    except Exception as e:
+        flash(f"Lỗi backup: {e}", "danger")
+    return redirect(url_for('admin_dashboard'))
+
+@app.route('/admin/recover', methods=['POST'])
+@login_required
+@admin_required
+def recover_db():
+    file = request.files['backup_file']
+    if file:
+        filepath = f"./uploads/{file.filename}"
+        file.save(filepath)
+        try:
+            subprocess.run(
+                ["mysql", "-u", "root", "-pYourPassword", "cinema_management"],
+                stdin=open(filepath, "r"),
+                check=True
+            )
+            flash("Phục hồi dữ liệu thành công!", "success")
+        except Exception as e:
+            flash(f"Lỗi phục hồi: {e}", "danger")
+    return redirect(url_for('admin_dashboard'))
 
 # =====================================================================
 # CUSTOMER – Dashboard xem phim hôm nay
