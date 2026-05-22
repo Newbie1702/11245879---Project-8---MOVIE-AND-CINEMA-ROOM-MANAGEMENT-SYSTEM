@@ -7,7 +7,6 @@ from flask import send_file
 app = Flask(__name__)
 app.secret_key = "cinema_management_secret_key_v2"
 
-
 # =====================================================================
 # DB CONNECTION
 # =====================================================================
@@ -18,7 +17,8 @@ def get_connection():
         password="170206",
         database="cinema_management"
     )
-
+# TÀI KHOẢN ADMIN
+cursor.execute("INSERT INTO Accounts (Username, Password, Role) VALUES (%s, %s, %s)", ("admin1", "adminpass", "Admin"))
 
 # =====================================================================
 # DECORATORS
