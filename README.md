@@ -145,7 +145,7 @@ def backup_db():
     filepath = os.path.join("backup", filename)
     try:
         subprocess.run(
-            ["mysqldump", "-u", "root", "-p170206", "cinema_management"],
+            ["mysqldump", "-u", "root", "-pYOUR_MYSQL_PASSWORD", "cinema_management"],
             stdout=open(filepath, "w"),
             check=True
         )
@@ -163,7 +163,7 @@ def recover_db():
             file.save(filepath)
             try:
                 subprocess.run(
-                    ["mysql", "-u", "root", "-p170206", "cinema_management"],
+                    ["mysql", "-u", "root", "-pYOUR_MYSQL_PASSWORD", "cinema_management"],
                     stdin=open(filepath, "r"),
                     check=True
                 )
