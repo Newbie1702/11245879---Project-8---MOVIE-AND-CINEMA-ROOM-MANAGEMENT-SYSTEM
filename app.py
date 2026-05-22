@@ -10,6 +10,7 @@ app.secret_key = "cinema_management_secret_key_v2"
 # =====================================================================
 # DB CONNECTION
 # =====================================================================
+
 def get_connection():
     return mysql.connector.connect(
         host="localhost",
@@ -17,8 +18,37 @@ def get_connection():
         password="170206",
         database="cinema_management"
     )
+import mysql.connector
+
+# =====================================================================
 # TÀI KHOẢN ADMIN
-cursor.execute("INSERT INTO Accounts (Username, Password, Role) VALUES (%s, %s, %s)", ("admin1", "adminpass", "Admin"))
+# =====================================================================
+
+def ensure_admin_account():
+    conn = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="170206",
+        database="cinema_management"
+    )
+    cursor = conn.cursor()
+
+    # kiểm tra xem admin1 đã tồn tại chưa
+    cursor.execute("SELECT * FROM Accounts WHERE Username = %s", ("admin1",))
+    result = cursor.fetchone()
+
+    if not result:
+        cursor.execute(
+            "INSERT INTO Accounts (Username, Password, Role) VALUES (%s, %s, %s)",
+            ("admin1", "adminpass", "Admin")
+        )
+        conn.commit()
+
+    cursor.close()
+    conn.close()
+
+# Gọi hàm này ngay khi app khởi động
+ensure_admin_account()
 
 # =====================================================================
 # DECORATORS
