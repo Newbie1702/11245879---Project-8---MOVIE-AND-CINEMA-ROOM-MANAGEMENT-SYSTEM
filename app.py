@@ -1,6 +1,8 @@
 from flask import Flask, request, render_template, redirect, url_for, session, flash
 import mysql.connector
 from functools import wraps
+import os
+from flask import send_file
 
 app = Flask(__name__)
 app.secret_key = "cinema_management_secret_key_v2"
