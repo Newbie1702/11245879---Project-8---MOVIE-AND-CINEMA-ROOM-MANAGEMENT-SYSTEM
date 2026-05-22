@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Recover Database{% endblock %}
+{% block content %}
+<h2 class="text-danger mb-4">Hãy thả dữ liệu database</h2>
+
+<form action="{{ url_for('recover_db') }}" method="post" enctype="multipart/form-data"
+      class="p-4 border rounded bg-dark text-white">
+  <div class="mb-3">
+    <input type="file" name="backup_file" class="form-control" required>
+  </div>
+  <button type="submit" class="btn btn-danger">Khôi phục dữ liệu</button>
+  <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">← Quay lại trang trước</a>
+</form>
+{% endblock %}
