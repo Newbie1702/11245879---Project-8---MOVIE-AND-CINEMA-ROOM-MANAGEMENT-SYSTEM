@@ -23,10 +23,6 @@ cursor.execute("TRUNCATE TABLE Movies")
 cursor.execute("TRUNCATE TABLE Accounts")
 cursor.execute("SET FOREIGN_KEY_CHECKS = 1")
 
-
-# Accounts: 1 admin + 1 customer
-cursor.execute("INSERT INTO Accounts (Username, Password, Role) VALUES (%s, %s, %s)", ("admin1", "adminpass", "Admin"))
-
 # Movies: 8 dòng
 movies = [
     ("Avengers: Endgame","Action",180),
