@@ -476,37 +476,43 @@ import datetime
 @login_required
 @admin_required
 def backup_db():
+    # tạo file backup
     filename = f"backup_{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}.sql"
-    filepath = f"./backups/{filename}"
+    filepath = os.path.join("backup", filename)
     try:
         subprocess.run(
-            ["mysqldump", "-u", "root", "-pYourPassword", "cinema_management"],
+            ["mysqldump", "-u", "root", "-p170206", "cinema_management"],
             stdout=open(filepath, "w"),
             check=True
         )
-        flash(f"Backup thành công: {filename}", "success")
+        # tải file về cho người dùng
+        return send_file(filepath, as_attachment=True)
     except Exception as e:
         flash(f"Lỗi backup: {e}", "danger")
-    return redirect(url_for('admin_dashboard'))
+        return redirect(url_for('admin_dashboard'))
 
-@app.route('/admin/recover', methods=['POST'])
+@app.route('/admin/recover', methods=['GET', 'POST'])
 @login_required
 @admin_required
 def recover_db():
-    file = request.files['backup_file']
-    if file:
-        filepath = f"./uploads/{file.filename}"
-        file.save(filepath)
-        try:
-            subprocess.run(
-                ["mysql", "-u", "root", "-pYourPassword", "cinema_management"],
-                stdin=open(filepath, "r"),
-                check=True
-            )
-            flash("Phục hồi dữ liệu thành công!", "success")
-        except Exception as e:
-            flash(f"Lỗi phục hồi: {e}", "danger")
-    return redirect(url_for('admin_dashboard'))
+    if request.method == 'POST':
+        file = request.files['backup_file']
+        if file:
+            filepath = os.path.join("upload", file.filename)
+            file.save(filepath)
+            try:
+                subprocess.run(
+                    ["mysql", "-u", "root", "-p170206", "cinema_management"],
+                    stdin=open(filepath, "r"),
+                    check=True
+                )
+                flash("Phục hồi dữ liệu thành công!", "success")
+                return redirect(url_for('admin_dashboard'))
+            except Exception as e:
+                flash(f"Lỗi phục hồi: {e}", "danger")
+                return redirect(url_for('recover_db'))
+    # nếu GET thì render trang upload
+    return render_template("recover.html")
 
 # =====================================================================
 # CUSTOMER – Dashboard xem phim hôm nay
